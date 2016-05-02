@@ -13,7 +13,7 @@ Sub hello()
     Dim label2Flag, typeHeadFlag As Boolean
     Dim lastItem As PRM
     Dim nowItem As PRM
-    Dim R, C, outR, outC, typeHeadR, labelNo As Long
+    Dim R, outR, outC, typeHeadR, labelNo As Long
     Dim restCount As Double
     Dim outWs As Worksheet
     Dim setting As Worksheet
@@ -30,11 +30,11 @@ Sub hello()
     Set setting = Worksheets("setting")
     
     R = 1
-    C = 2
     outR = 1
     outC = 1
     typeHeadR = 1
     
+'header output
     If Cells(1, 5).Value = "ƒuƒ‰ƒCƒ_ƒ‹" Then
         labelType = 1
     Else
@@ -48,19 +48,20 @@ Sub hello()
     
     outR = outR + 1
 
-    
+
+'main
     Do While Cells(R, 2) <> ""
     
-        'type head judge
-        If nowItem.Label1 <> typeSearch(Cells(R, 2).Value).Label1 Then
-            If label2Flag = False And nowItem.Label2 <> 0 Then
-                label2Flag = True
-                R = typeHeadR
-            Else
-                label2Flag = False
-            End If
-            typeHeadFlag = True
-        End If
+'type head judge
+'        If nowItem.Label1 <> typeSearch(Cells(R, 2).Value).Label1 Then
+'            If label2Flag = False And nowItem.Label2 <> 0 Then
+'                label2Flag = True
+'                R = typeHeadR
+'            Else
+'                label2Flag = False
+'            End If
+'            typeHeadFlag = True
+'        End If
                 
     
     
@@ -112,10 +113,22 @@ Sub hello()
             outWs.Cells(outR, 4) = 1
             outR = outR + 1
         End If
+
+'type head judge
+        If nowItem.Label1 <> typeSearch(Cells(R, 2).Value).Label1 Then
+            If label2Flag = False And nowItem.Label2 <> 0 Then
+                label2Flag = True
+                R = typeHeadR
+            Else
+                label2Flag = False
+            End If
+            typeHeadFlag = True
+        End If
     
     Loop
     
-    CSVSave ("test")
+'    CSVSave ("test")
+    CSVSave (Cells(1, 5).Value & Format(Date, "yymmdd"))
     
 End Sub
 
