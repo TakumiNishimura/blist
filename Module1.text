@@ -170,5 +170,32 @@ Private Function CSVSave(saveName As String)
                 .Close
             End With
     End With
-End Function
 
+    Dim FS, WshNet
+    //Const strDrive = "Z:"
+    Dim strDrive,strUNC As String
+
+    strDrive = "Z:"
+    strUNC = "\\コピー先PC\コピー先フォルダ"
+
+    Set FS = CreateObject("Scripting.FileSystemObject")
+    Set WshNet = CreateObject("WScript.Network")
+    Set colDrives = WshNet.EnumNetworkDrives
+
+    If colDrives.Count > 1 then
+        For i = 0 to colDrives.Count - 1 step 2 
+            If colDrives.item(i+1) = strUNC then
+                strDrive = colDrives.item(i)
+            End If
+        Next
+    End If
+
+    If Not FS.DriveExists(strDrive) Then
+        WshNet.MapNetworkDrive strDrive, strUNC, False,"username" , "パスワード"
+    End If
+    FS.CopyFile "コピー元パス", strDrive & "\", True
+
+    Set WshNet = Nothing
+    Set FS = Nothing
+
+End Function
